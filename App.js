@@ -1,21 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import LoadingPage from "./scenes/LoadingPage";
+import MainView from "./scenes/MainView";
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const API_URL = "https://hospitals-scraper.herokuapp.com/";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+  const [data, setData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+  const [isFetching, setFetching] = useState(true);
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then((response) => response.json())
+      .then((json) => setData(json.data))
+      .catch((error) => console.error(error))
+      .finally(() => setFetching(false));
+  }, []);
+
+  if (isLoading || isFetching) {
+    return <LoadingPage setLoading={setLoading} timeout={4} data={data} />;
+  } else {
+    return <MainView data={data} />;
+  }
+};
+
+export default App;
