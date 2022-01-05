@@ -1,6 +1,5 @@
 import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import LoadingPage from "./scenes/LoadingPage";
 import MainView from "./scenes/MainView";
 
